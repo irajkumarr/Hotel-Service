@@ -1,7 +1,8 @@
+const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils");
 const { Auth } = require("../utils/commons");
 
-async function checkAuth() {
+async function checkAuth(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -21,6 +22,7 @@ async function checkAuth() {
 
     next();
   } catch (error) {
+    console.log(error);
     throw new AppError(
       "Unauthorized: " + (error.message || "Invalid token"),
       StatusCodes.UNAUTHORIZED
