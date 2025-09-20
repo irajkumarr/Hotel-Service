@@ -6,3 +6,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Hotel {
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String
+  location    String
+  rating      Float?
+  ratingCount Int?      @map("rating_count")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("hotels")
+}
