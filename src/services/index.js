@@ -1,3 +1,3 @@
-module.exports={
-    
-}
+module.exports = {
+  HotelService: require("./hotel-service"),
+};
