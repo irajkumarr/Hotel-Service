@@ -22,13 +22,24 @@ const createHotel = asyncHandler(async (req, res) => {
  * GET : /
  * req-body {}
  */
-const getHotels= asyncHandler(async (req, res) => {
+const getHotels = asyncHandler(async (req, res) => {
   const hotels = await HotelService.getHotels();
   SuccessResponse.data = hotels;
-  return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
+/**
+ * GET : /
+ * req-body {}
+ */
+const getHotel = asyncHandler(async (req, res) => {
+  const hotel = await HotelService.getHotel(req.params.id);
+  SuccessResponse.data = hotel;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
 module.exports = {
   createHotel,
   getHotels,
+  getHotel,
 };

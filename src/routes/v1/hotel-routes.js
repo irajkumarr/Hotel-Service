@@ -14,4 +14,7 @@ router.post(
 // api/v1/hotels  GET
 router.get("/", HotelController.getHotels);
 
+// api/v1/hotels/:id  GET
+router.get("/:id", HotelController.getHotel);
+
 module.exports = router;
