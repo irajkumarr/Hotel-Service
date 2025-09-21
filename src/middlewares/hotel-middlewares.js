@@ -39,6 +39,39 @@ function validateCreateRequest(req, res, next) {
   next();
 }
 
+const hotelUpdateSchema = Joi.object({
+  name: Joi.string().messages({
+    "string.base": "Hotel name must be a string",
+    "string.empty": "Hotel name cannot be empty",
+  }),
+  address: Joi.string().messages({
+    "string.base": "Address must be a string",
+    "string.empty": "Address cannot be empty",
+  }),
+  location: Joi.string().messages({
+    "string.base": "Location must be a string",
+    "string.empty": "Location cannot be empty",
+  }),
+});
+
+// Middleware
+function validateUpdateRequest(req, res, next) {
+  const { error, value } = hotelUpdateSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    const errors = error.details.map((detail) => FormatMessage(detail.message));
+    ErrorResponse.message = "Something went wrong while updating hotel";
+    ErrorResponse.error = new AppError(errors, StatusCodes.BAD_REQUEST);
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+
+  req.body = value;
+  next();
+}
+
 module.exports = {
   validateCreateRequest,
+  validateUpdateRequest
 };

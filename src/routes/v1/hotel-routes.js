@@ -21,6 +21,10 @@ router.get("/:id", HotelController.getHotel);
 router.delete("/:id", HotelController.deleteHotel);
 
 // api/v1/hotels/:id  PATCH
-router.patch("/:id", HotelController.updateHotel);
+router.patch(
+  "/:id",
+  HotelMiddlewares.validateUpdateRequest,
+  HotelController.updateHotel
+);
 
 module.exports = router;
