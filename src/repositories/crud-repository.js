@@ -7,47 +7,58 @@ class CrudRepository {
   }
 
   async create(data) {
-    const response = await this.model.create({ data });
-    return response;
+    return await this.model.create({ data });
   }
 
   async getAll() {
-    const response = await this.model.findMany();
-    return response;
+    return await this.model.findMany({
+      where: { deletedAt: null },
+    });
   }
 
-  async get(data) {
+  async get(id) {
     const response = await this.model.findUnique({
       where: {
-        id: data,
+        id,
+        deletedAt: null,
       },
     });
+
     if (!response) {
       throw new AppError(
         "Not able to find the resource",
         StatusCodes.NOT_FOUND
       );
     }
-    return response;
-  }
 
-  async delete(data) {
-    const response = await this.model.delete({
-      where: {
-        id: data,
-      },
-    });
     return response;
   }
 
   async update(id, data) {
-    const response = await this.model.update({
-      where: {
-        id: id,
-      },
-      data: data,
+    return await this.model.update({
+      where: { id },
+      data,
     });
-    return response;
+  }
+
+  async delete(id) {
+    return await this.model.delete({
+      where: { id },
+    });
+  }
+
+  async softDelete(id) {
+    return await this.model.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
+
+  async restore(id) {
+    return await this.model.update({
+      where: { id },
+      data: { deletedAt: null },
+    });
   }
 }
 

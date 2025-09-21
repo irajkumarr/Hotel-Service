@@ -38,8 +38,19 @@ const getHotel = asyncHandler(async (req, res) => {
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
+/**
+ * DELETE : /
+ * req-body {}
+ */
+const deleteHotel = asyncHandler(async (req, res) => {
+  const hotel = await HotelService.deleteHotel(req.params.id);
+  SuccessResponse.data = hotel;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
 module.exports = {
   createHotel,
   getHotels,
   getHotel,
+  deleteHotel
 };

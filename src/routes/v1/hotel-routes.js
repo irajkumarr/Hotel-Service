@@ -17,4 +17,7 @@ router.get("/", HotelController.getHotels);
 // api/v1/hotels/:id  GET
 router.get("/:id", HotelController.getHotel);
 
+// api/v1/hotels/:id  DELETE
+router.delete("/:id", HotelController.deleteHotel);
+
 module.exports = router;

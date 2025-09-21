@@ -26,7 +26,7 @@ async function createHotel(data) {
 async function getHotels(data) {
   try {
     const hotels = await hotelRepository.getAll();
-    if (hotels.lenght === 0) {
+    if (hotels.length === 0) {
       throw new AppError(
         "No hotels found in the database",
         StatusCodes.NOT_FOUND
@@ -50,7 +50,28 @@ async function getHotel(id) {
     return hotel;
   } catch (error) {
     if ((error.statusCode = StatusCodes.NOT_FOUND)) {
-      throw new AppError("The hotel you requested is not present");
+      throw new AppError(
+        "The hotel you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of hotel",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function deleteHotel(id) {
+  try {
+    const hotel = await hotelRepository.softDelete(Number(id));
+    return hotel;
+  } catch (error) {
+    if (error.name === "PrismaClientKnownRequestError") {
+      throw new AppError(
+        "The hotel you requested to delete is not present",
+        StatusCodes.NOT_FOUND
+      );
     }
     throw new AppError(
       "Cannot fetch data of hotel",
@@ -63,4 +84,5 @@ module.exports = {
   createHotel,
   getHotels,
   getHotel,
+  deleteHotel,
 };
