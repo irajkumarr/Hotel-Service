@@ -8,15 +8,40 @@ datasource db {
 }
 
 model Hotel {
-  id          Int       @id @default(autoincrement())
-  name        String
-  address     String
-  location    String
-  rating      Float?
-  ratingCount Int?      @map("rating_count")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
+  id           Int            @id @default(autoincrement())
+  name         String
+  address      String
+  location     String
+  rating       Float?
+  ratingCount  Int?           @map("rating_count")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  deletedAt    DateTime?      @map("deleted_at")
+  RoomCategory RoomCategory[]
 
   @@map("hotels")
+}
+
+model RoomCategory {
+  id        Int       @id @default(autoincrement())
+  hotelId   Int       @map("hotel_id")
+  price     Int
+  roomType  RoomType  @map("room_type")
+  roomCount Int       @map("room_count")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  //relation
+  hotel Hotel @relation(fields: [hotelId], references: [id])
+
+  @@map("room_categories")
+}
+
+enum RoomType {
+  SINGLE
+  DOUBLE
+  SUITE
+  DELUXE
+  FAMILY
 }
