@@ -74,5 +74,7 @@ model RoomAvailability {
   // Relations
   room Room @relation(fields: [roomId], references: [id])
 
-  @@unique([roomId, date]) // a room can only have one record per date
+  @@unique([roomId, date]) 
+@@map("room_availabilites")
+
 }
