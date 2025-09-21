@@ -11,4 +11,7 @@ router.post(
   HotelController.createHotel
 );
 
+// api/v1/hotels  GET
+router.get("/", HotelController.getHotels);
+
 module.exports = router;

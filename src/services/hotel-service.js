@@ -6,7 +6,7 @@ const hotelRepository = new HotelRepository();
 
 async function createHotel(data) {
   try {
-    const hotel = await hotelRepository.create( data );
+    const hotel = await hotelRepository.create(data);
     return hotel;
   } catch (error) {
     if (error instanceof AppError) {
@@ -23,6 +23,28 @@ async function createHotel(data) {
   }
 }
 
+async function getHotels(data) {
+  try {
+    const hotels = await hotelRepository.getAll();
+    if (hotels.lenght === 0) {
+      throw new AppError(
+        "No hotels found in the database",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return hotels;
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError(
+      "Cannot fetch data of all hotels",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createHotel,
+  getHotels,
 };
