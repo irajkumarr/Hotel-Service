@@ -80,9 +80,28 @@ async function deleteHotel(id) {
   }
 }
 
+async function updateHotel(id, data) {
+  try {
+    const hotel = await hotelRepository.update(Number(id), data);
+    return hotel;
+  } catch (error) {
+    if (error.name === "PrismaClientKnownRequestError") {
+      throw new AppError(
+        "The hotel you requested to update is not present",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of hotel",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createHotel,
   getHotels,
   getHotel,
   deleteHotel,
+  updateHotel,
 };

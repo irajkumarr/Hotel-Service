@@ -20,4 +20,7 @@ router.get("/:id", HotelController.getHotel);
 // api/v1/hotels/:id  DELETE
 router.delete("/:id", HotelController.deleteHotel);
 
+// api/v1/hotels/:id  PATCH
+router.patch("/:id", HotelController.updateHotel);
+
 module.exports = router;
