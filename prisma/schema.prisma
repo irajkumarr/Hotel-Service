@@ -50,31 +50,17 @@ enum RoomType {
 }
 
 model Room {
-  id             Int @id @default(autoincrement())
-  hotelId        Int @map("hotel_id")
-  roomCategoryId Int @map("room_category_id")
+  id                 Int      @id @default(autoincrement())
+  hotelId            Int      @map("hotel_id")
+  roomCategoryId     Int      @map("room_category_id")
+  dateOfAvailability DateTime @map("date_of_availability")
 
   // Relations
-  hotel          Hotel              @relation(fields: [hotelId], references: [id])
-  category       RoomCategory       @relation(fields: [roomCategoryId], references: [id])
-  availabilities RoomAvailability[]
+  hotel     Hotel        @relation(fields: [hotelId], references: [id])
+  category  RoomCategory @relation(fields: [roomCategoryId], references: [id])
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+  deletedAt DateTime?    @map("deleted_at")
 
   @@map("rooms")
-}
-
-model RoomAvailability {
-  id       Int      @id @default(autoincrement())
-  roomId   Int
-  date     DateTime
-  isBooked Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  room Room @relation(fields: [roomId], references: [id])
-
-  @@unique([roomId, date]) 
-@@map("room_availabilites")
-
 }
