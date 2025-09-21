@@ -8,15 +8,17 @@ datasource db {
 }
 
 model Hotel {
-  id           Int            @id @default(autoincrement())
-  name         String
-  address      String
-  location     String
-  rating       Float?
-  ratingCount  Int?           @map("rating_count")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  deletedAt    DateTime?      @map("deleted_at")
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String
+  location    String
+  rating      Float?
+  ratingCount Int?      @map("rating_count")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  Room         Room[]
   RoomCategory RoomCategory[]
 
   @@map("hotels")
@@ -33,7 +35,8 @@ model RoomCategory {
   deletedAt DateTime? @map("deleted_at")
 
   //relation
-  hotel Hotel @relation(fields: [hotelId], references: [id])
+  hotel Hotel  @relation(fields: [hotelId], references: [id])
+  Room  Room[]
 
   @@map("room_categories")
 }
@@ -44,4 +47,17 @@ enum RoomType {
   SUITE
   DELUXE
   FAMILY
+}
+
+model Room {
+  id                 Int      @id @default(autoincrement())
+  hotelId            Int      @map("hotel_id")
+  roomCategoryId     Int      @map("room_category_id")
+  dateOfAvailability DateTime @map("date_of_availability")
+
+  // Relations
+  hotel    Hotel        @relation(fields: [hotelId], references: [id])
+  category RoomCategory @relation(fields: [roomCategoryId], references: [id])
+
+  @@map("rooms")
 }
