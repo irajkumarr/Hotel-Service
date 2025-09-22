@@ -2,25 +2,20 @@ const { StatusCodes } = require("http-status-codes");
 const { asyncHandler } = require("../middlewares");
 const { RoomGenerationService } = require("../services");
 const { SuccessResponse } = require("../utils/commons");
+const {
+  addRoomGenerationJobToQueue,
+} = require("../producers/room-generation-producer");
 
 /**
  * POST : /
- * req-body {name:"Guest Hotel",address:"KTM",location:"Thamel"}
+ * req-body {roomCategoryId:2,startDate:"2025-02-02",endDate:"2025-09-09"}
  */
-const createRoom = asyncHandler(async (req, res) => {
-  const { roomCategoryId, startDate, endDate, batchSize, priceOverride } =
-    req.body;
-  const rooms = await RoomGenerationService.generateRooms({
-    roomCategoryId,
-    startDate,
-    endDate,
-    batchSize,
-    priceOverride,
-  });
-  SuccessResponse.data = rooms;
+const generateRoom = asyncHandler(async (req, res) => {
+  await addRoomGenerationJobToQueue(req.body);
+  SuccessResponse.message = "Room generation job added to queue";
   return res.status(StatusCodes.CREATED).json(SuccessResponse);
 });
 
 module.exports = {
-  createRoom,
+  generateRoom,
 };
