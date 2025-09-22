@@ -12,8 +12,8 @@ router.get("/", RoomController.getRooms);
 // api/v1/rooms/:id  GET
 router.get("/:id", RoomController.getRoom);
 
-// // api/v1/hotels/:id  DELETE
-// router.delete("/:id", HotelController.deleteHotel);
+// api/v1/rooms/:id  DELETE
+router.delete("/:id", RoomController.deleteRoom);
 
 // // api/v1/hotels/:id  PATCH
 // router.patch(

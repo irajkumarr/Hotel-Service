@@ -38,8 +38,19 @@ const getRoom = asyncHandler(async (req, res) => {
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
+/**
+ * DELETE : /
+ * req-body {}
+ */
+const deleteRoom = asyncHandler(async (req, res) => {
+  const room = await RoomService.deleteRoom(req.params.id);
+  SuccessResponse.data = room;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
 module.exports = {
   createRoom,
   getRooms,
   getRoom,
+  deleteRoom
 };
