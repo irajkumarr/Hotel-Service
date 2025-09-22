@@ -33,7 +33,7 @@ class RoomRepository extends CrudRepository {
         dateOfAvailability: true,
       },
     });
-
+    
     return results.map((result) => ({
       roomCategoryId: result.roomCategoryId,
       latestDate: result._max.dateOfAvailability,
