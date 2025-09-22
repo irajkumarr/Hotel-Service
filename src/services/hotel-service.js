@@ -49,7 +49,7 @@ async function getHotel(id) {
     const hotel = await hotelRepository.get(Number(id));
     return hotel;
   } catch (error) {
-    if ((error.statusCode = StatusCodes.NOT_FOUND)) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
       throw new AppError(
         "The hotel you requested is not present",
         error.statusCode

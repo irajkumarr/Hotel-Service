@@ -57,11 +57,11 @@ model Room {
   price              Int
 
   // Relations
-  hotel     Hotel        @relation(fields: [hotelId], references: [id])
-  category  RoomCategory @relation(fields: [roomCategoryId], references: [id])
-  createdAt DateTime     @default(now()) @map("created_at")
-  updatedAt DateTime     @updatedAt @map("updated_at")
-  deletedAt DateTime?    @map("deleted_at")
+  hotel        Hotel        @relation(fields: [hotelId], references: [id])
+  roomCategory RoomCategory @relation(fields: [roomCategoryId], references: [id])
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+  deletedAt    DateTime?    @map("deleted_at")
 
   @@map("rooms")
 }

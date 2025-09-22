@@ -5,12 +5,11 @@ const { SuccessResponse } = require("../utils/commons");
 
 /**
  * POST : /
- * req-body {hotelId:1,roomCategoryId:2,dateOfAvailability:"2025-09-08"}
+ * req-body {roomCategoryId:2,dateOfAvailability:"2025-09-08"}
  */
 const createRoom = asyncHandler(async (req, res) => {
-  const { hotelId, roomCategoryId, dateOfAvailability } = req.body;
+  const { roomCategoryId, dateOfAvailability } = req.body;
   const room = await RoomService.createRoom({
-    hotelId,
     roomCategoryId,
     dateOfAvailability,
   });
