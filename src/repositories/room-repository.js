@@ -6,6 +6,18 @@ class RoomRepository extends CrudRepository {
     super(prisma.room);
   }
 
+  async getAllRooms(filter, sort) {
+    return await this.model.findMany({
+      // where: { filter, deletedAt: null },
+      where: filter,
+      orderBy: sort,
+      include: {
+        roomCategory: true,
+        hotel: true,
+      },
+    });
+  }
+
   async findByRoomCategoryIdAndDate(roomCategoryId, currentDate) {
     return await this.model.findFirst({
       where: {
@@ -33,7 +45,7 @@ class RoomRepository extends CrudRepository {
         dateOfAvailability: true,
       },
     });
-    
+
     return results.map((result) => ({
       roomCategoryId: result.roomCategoryId,
       latestDate: result._max.dateOfAvailability,

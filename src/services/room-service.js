@@ -50,6 +50,77 @@ async function createRoom(data) {
   }
 }
 
+async function getRooms(query) {
+  let customFilter = { deletedAt: null };
+  let sortFilter = [];
+  const endingTripTime = " 23:59:59";
+  // price 1000-4500
+  if (query.price) {
+    [minPrice, maxPrice] = query.price.split("-").map(Number);
+    customFilter.price = {
+      gte: minPrice,
+      lte: maxPrice,
+    };
+  }
+  // availableDate 2023-03-09
+  if (query.availability) {
+    customFilter.dateOfAvailability = {
+      gte: new Date(query.availability),
+      lte: new Date(query.availability + endingTripTime),
+    };
+  }
+  // Filter by room category type (RoomCategory table)
+  if (query.roomType) {
+    customFilter.roomCategory = {
+      roomType: query.roomType.toUpperCase(), // e.g., "Deluxe", "Standard"
+    };
+  }
+
+  // Filter by hotel location and rating (Hotel table)
+  if (query.hotelLocation || query.hotelRating) {
+    customFilter.hotel = {};
+    if (query.hotelLocation) {
+      customFilter.hotel.location = {
+        contains: query.hotelLocation,
+        mode: "insensitive",
+      };
+    }
+    if (query.hotelRating) {
+      customFilter.hotel.rating = {
+        gte: Number(query.hotelRating),
+      };
+    }
+  }
+  if (query.sort) {
+    const params = query.sort.split(",");
+    const sortFilters = params.map((param) => {
+      const [field, order] = param.split("_");
+      return { [field]: order.toLowerCase() };
+    });
+    sortFilter = sortFilters;
+  }
+  try {
+    const rooms = await roomRepository.getAllRooms(customFilter, sortFilter);
+    if (rooms.length === 0) {
+      throw new AppError(
+        "No rooms found in the database",
+        StatusCodes.NOT_FOUND
+      );
+    }
+
+    return rooms;
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError(
+      "Cannot fetch data of all rooms",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createRoom,
+  getRooms,
 };
