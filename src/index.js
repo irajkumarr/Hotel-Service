@@ -9,6 +9,7 @@ const {
 const {
   setupRoomGenerationJobWorker,
 } = require("./processors/room-generation-processor");
+const { startScheduler } = require("./scheduler/room-scheduler");
 
 const app = express();
 
@@ -26,6 +27,10 @@ app.use(errorHandler);
 
 //* Start Worker
 setupRoomGenerationJobWorker();
+
+// Start the room availability extension scheduler
+startScheduler();
+Logger.info("Room availability extension scheduler initialized");
 
 //Server starting
 app.listen(ServerConfig.PORT, () => {

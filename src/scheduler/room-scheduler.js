@@ -67,6 +67,7 @@ const extendRoomAvailability = async () => {
   try {
     const roomCategoriesWithLatestDates =
       await roomRepository.findLatestDatesForAllCategories();
+
     if (roomCategoriesWithLatestDates.length === 0) {
       Logger.info("No room categories found with availability dates");
       return;
@@ -79,6 +80,7 @@ const extendRoomAvailability = async () => {
       await extendCategoryAvailability(categoryData);
     }
   } catch (error) {
+    console.log(error);
     Logger.error("Error extending room availability:", error);
     throw error;
   }
@@ -87,13 +89,12 @@ const extendRoomAvailability = async () => {
 /**
  * Extend availability for a specific room category
  */
-const extendCategoryAvailability = async () => {
+const extendCategoryAvailability = async (categoryData) => {
   try {
     const { roomCategoryId, latestDate } = categoryData;
-
     const nextDate = new Date(latestDate);
     nextDate.setDate(nextDate.getDate() + 1);
-    const roomCategory = await roomCategoryRepository.get(roomCategoryId);
+    const roomCategory = await roomCategoryRepository.get(+roomCategoryId);
     if (!roomCategory) {
       Logger.warn(
         `Room category ${roomCategoryId} not found, skipping extension`
