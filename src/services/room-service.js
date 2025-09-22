@@ -148,7 +148,30 @@ async function getRooms(query) {
   }
 }
 
+async function getRoom(id) {
+  try {
+    const room = await roomRepository.getRoom(Number(id));
+    return room;
+  } catch (error) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The room you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of room",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+
+
+
+
 module.exports = {
   createRoom,
   getRooms,
+  getRoom,
 };

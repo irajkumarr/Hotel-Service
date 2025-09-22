@@ -24,6 +24,28 @@ class RoomRepository extends CrudRepository {
     return { rooms, totalCount };
   }
 
+  async getRoom(id) {
+    const response = await this.model.findUnique({
+      where: {
+        id,
+        deletedAt: null,
+      },
+      include: {
+        roomCategory: true,
+        hotel: true,
+      },
+    });
+
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource",
+        StatusCodes.NOT_FOUND
+      );
+    }
+
+    return response;
+  }
+
   async findByRoomCategoryIdAndDate(roomCategoryId, currentDate) {
     return await this.model.findFirst({
       where: {

@@ -9,8 +9,8 @@ router.post("/", RoomController.createRoom);
 // api/v1/rooms  GET
 router.get("/", RoomController.getRooms);
 
-// // api/v1/hotels/:id  GET
-// router.get("/:id", HotelController.getHotel);
+// api/v1/rooms/:id  GET
+router.get("/:id", RoomController.getRoom);
 
 // // api/v1/hotels/:id  DELETE
 // router.delete("/:id", HotelController.deleteHotel);

@@ -28,7 +28,18 @@ const getRooms = asyncHandler(async (req, res) => {
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
+/**
+ * GET : /
+ * req-body {}
+ */
+const getRoom = asyncHandler(async (req, res) => {
+  const room = await RoomService.getRoom(req.params.id);
+  SuccessResponse.data = room;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
 module.exports = {
   createRoom,
   getRooms,
+  getRoom,
 };
