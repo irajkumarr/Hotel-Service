@@ -4,6 +4,7 @@ CREATE TABLE "public"."rooms" (
     "hotel_id" INTEGER NOT NULL,
     "room_category_id" INTEGER NOT NULL,
     "date_of_availability" TIMESTAMP(3) NOT NULL,
+    "price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),

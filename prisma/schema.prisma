@@ -54,6 +54,7 @@ model Room {
   hotelId            Int      @map("hotel_id")
   roomCategoryId     Int      @map("room_category_id")
   dateOfAvailability DateTime @map("date_of_availability")
+  price              Int
 
   // Relations
   hotel     Hotel        @relation(fields: [hotelId], references: [id])
