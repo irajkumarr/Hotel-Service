@@ -7,4 +7,6 @@ module.exports = {
   PUBLIC_KEY: fs.readFileSync(path.join(__dirname, "../../public.key"), "utf8"),
   //Redis
   REDIS_URL: process.env.REDIS_URL,
+  //Scheduler
+  ROOM_CRON: process.env.ROOM_CRON,
 };

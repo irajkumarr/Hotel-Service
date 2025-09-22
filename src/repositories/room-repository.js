@@ -22,6 +22,23 @@ class RoomRepository extends CrudRepository {
       skipDuplicates: true,
     });
   }
+
+  async findLatestDatesForAllCategories() {
+    const results = await this.model.groupBy({
+      by: ["roomCategoryId"],
+      where: {
+        deletedAt: null,
+      },
+      _max: {
+        dateOfAvailability: true,
+      },
+    });
+
+    return results.map((result) => ({
+      roomCategoryId: result.roomCategoryId,
+      latestDate: result._max.dateOfAvailability,
+    }));
+  }
 }
 
 module.exports = RoomRepository;

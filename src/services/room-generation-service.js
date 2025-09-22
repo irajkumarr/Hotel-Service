@@ -96,7 +96,6 @@ async function processDateBatch(
         roomCategory.id,
         currentDate
       );
-      console.log(priceOverride);
       if (!existingRoom) {
         roomsToCreate.push({
           hotelId: roomCategory.hotelId,
