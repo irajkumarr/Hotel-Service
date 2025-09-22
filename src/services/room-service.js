@@ -53,7 +53,6 @@ async function createRoom(data) {
 async function getRooms(query) {
   let customFilter = { deletedAt: null };
   let sortFilter = [];
-  const endingTripTime = " 23:59:59";
   // price 1000-4500
   if (query.price) {
     [minPrice, maxPrice] = query.price.split("-").map(Number);
@@ -62,13 +61,23 @@ async function getRooms(query) {
       lte: maxPrice,
     };
   }
-  // availableDate 2023-03-09
+
+  // Availability (single date or range) 2023-09-09
+  const endingAvailableTime = " 23:59:59";
   if (query.availability) {
+    // Single day filter
     customFilter.dateOfAvailability = {
       gte: new Date(query.availability),
-      lte: new Date(query.availability + endingTripTime),
+      lte: new Date(query.availability + endingAvailableTime),
+    };
+  } else if (query.checkIn && query.checkOut) {
+    // Multi-day filter ?checkIn=2025-09-24&checkOut=2025-09-25
+    customFilter.dateOfAvailability = {
+      gte: new Date(query.checkIn),
+      lte: new Date(query.checkOut + endingAvailableTime),
     };
   }
+
   // Filter by room category type (RoomCategory table)
   if (query.roomType) {
     customFilter.roomCategory = {
@@ -99,17 +108,36 @@ async function getRooms(query) {
     });
     sortFilter = sortFilters;
   }
+  // Pagination
+  const page = parseInt(query.page) || 1;
+  const limit = parseInt(query.limit) || 10;
+  const skip = (page - 1) * limit;
   try {
-    const rooms = await roomRepository.getAllRooms(customFilter, sortFilter);
-    if (rooms.length === 0) {
+    const { rooms, totalCount } = await roomRepository.getAllRooms(
+      customFilter,
+      sortFilter,
+      skip,
+      limit
+    );
+
+    if (!rooms.length) {
       throw new AppError(
         "No rooms found in the database",
         StatusCodes.NOT_FOUND
       );
     }
 
-    return rooms;
+    return {
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+      data: rooms,
+    };
   } catch (error) {
+    console.log(error);
     if (error instanceof AppError) {
       throw error;
     }

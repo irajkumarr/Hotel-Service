@@ -6,16 +6,22 @@ class RoomRepository extends CrudRepository {
     super(prisma.room);
   }
 
-  async getAllRooms(filter, sort) {
-    return await this.model.findMany({
-      // where: { filter, deletedAt: null },
-      where: filter,
-      orderBy: sort,
-      include: {
-        roomCategory: true,
-        hotel: true,
-      },
-    });
+  async getAllRooms(filter, sort, skip, limit) {
+    const [rooms, totalCount] = await prisma.$transaction([
+      this.model.findMany({
+        where: filter,
+        orderBy: sort,
+        skip,
+        take: limit,
+        include: {
+          roomCategory: true,
+          hotel: true,
+        },
+      }),
+      this.model.count({ where: filter }),
+    ]);
+
+    return { rooms, totalCount };
   }
 
   async findByRoomCategoryIdAndDate(roomCategoryId, currentDate) {
