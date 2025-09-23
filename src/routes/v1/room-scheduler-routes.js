@@ -2,7 +2,7 @@ const express = require("express");
 const { RoomSchedulerController } = require("../../controllers");
 const { AuthMiddlewares } = require("../../middlewares");
 
-const { Enums } = require("../utils/commons");
+const { Enums } = require("../../utils/commons");
 const { ADMIN } = Enums.ROLE_TYPE;
 const router = express.Router();
 
