@@ -112,7 +112,7 @@ const extendCategoryAvailability = async (categoryData) => {
       return;
     }
     const endDate = new Date(nextDate);
-    endDate.setDate(endDate.getDate() + 1);
+    endDate.setDate(endDate.getDate());
 
     const jobData = {
       roomCategoryId,
