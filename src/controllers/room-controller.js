@@ -48,9 +48,23 @@ const deleteRoom = asyncHandler(async (req, res) => {
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
+/**
+ * PATCH : /
+ * req-body {price:3000}
+ */
+const updateRoom = asyncHandler(async (req, res) => {
+  const { price } = req.body;
+  const room = await RoomService.updateRoom(req.params.id, {
+    price,
+  });
+  SuccessResponse.data = room;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
 module.exports = {
   createRoom,
   getRooms,
   getRoom,
-  deleteRoom
+  deleteRoom,
+  updateRoom,
 };

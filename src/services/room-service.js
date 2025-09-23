@@ -166,7 +166,6 @@ async function getRoom(id) {
   }
 }
 
-
 async function deleteRoom(id) {
   try {
     const room = await roomRepository.softDelete(Number(id));
@@ -185,11 +184,28 @@ async function deleteRoom(id) {
   }
 }
 
-
+async function updateRoom(id, data) {
+  try {
+    const room = await roomRepository.update(Number(id), data);
+    return room;
+  } catch (error) {
+    if (error.name === "PrismaClientKnownRequestError") {
+      throw new AppError(
+        "The room you requested to update is not present",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of room",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
 
 module.exports = {
   createRoom,
   getRooms,
   getRoom,
-  deleteRoom
+  deleteRoom,
+  updateRoom,
 };
