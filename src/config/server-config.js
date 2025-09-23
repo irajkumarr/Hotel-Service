@@ -9,4 +9,5 @@ module.exports = {
   REDIS_URL: process.env.REDIS_URL,
   //Scheduler
   ROOM_CRON: process.env.ROOM_CRON,
+  USER_SERVICE_URL: process.env.USER_SERVICE_URL,
 };
