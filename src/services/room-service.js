@@ -128,13 +128,13 @@ async function getRooms(query) {
     }
 
     return {
+      rooms,
       pagination: {
         total: totalCount,
         page,
         limit,
         totalPages: Math.ceil(totalCount / limit),
       },
-      rooms,
     };
   } catch (error) {
     console.log(error);

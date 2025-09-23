@@ -55,7 +55,7 @@ const stopScheduler = () => {
  */
 const getSchedulerStatus = () => {
   return {
-    isRunning: cronJob !== null && cronJob.getStatus() === "scheduled",
+    isRunning: cronJob !== null,
   };
 };
 
