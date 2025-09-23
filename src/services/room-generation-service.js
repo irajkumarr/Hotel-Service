@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils");
 const { RoomRepository, RoomCategoryRepository } = require("../repositories");
-const { prisma, Logger } = require("../config");
+const { Logger } = require("../config");
 
 const roomRepository = new RoomRepository();
 const roomCategoryRepository = new RoomCategoryRepository();
@@ -9,6 +9,7 @@ const roomCategoryRepository = new RoomCategoryRepository();
 async function generateRooms(jobData) {
   let totalRoomsCreated = 0;
   let totalDatesProcessed = 0;
+
   try {
     const roomCategory = await roomCategoryRepository.get(
       +jobData.roomCategoryId
@@ -20,33 +21,40 @@ async function generateRooms(jobData) {
         StatusCodes.NOT_FOUND
       );
     }
+
     const startDate = new Date(jobData.startDate);
     const endDate = new Date(jobData.endDate);
-    if (startDate >= endDate) {
-      Logger.error(`Start date must be before end date`);
+    const today = new Date();
+
+    if (startDate > endDate) {
+      Logger.error(`Start date must be before or equal to end date`);
       throw new AppError(
-        `Start date must be before end date`,
+        `Start date must be before or equal to end date`,
         StatusCodes.BAD_REQUEST
       );
     }
-    if (startDate < new Date()) {
-      Logger.error(`Start date must be in the future`);
+
+    if (startDate < today) {
+      Logger.error(`Start date must be today or in the future`);
       throw new AppError(
-        `Start date must be in the future`,
+        `Start date must be today or in the future`,
         StatusCodes.BAD_REQUEST
       );
     }
-    const totalDays = Math.ceil(
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
+
+    // inclusive of endDate
+    const totalDays =
+      Math.ceil(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      ) + 1;
 
     Logger.info(`Generating rooms for ${totalDays} days`);
     const batchSize = jobData.batchSize || 100;
     let currentDate = new Date(startDate);
 
-    while (currentDate < endDate) {
+    while (currentDate <= endDate) {
       let batchEndDate = new Date(currentDate);
-      batchEndDate.setDate(batchEndDate.getDate() + batchSize);
+      batchEndDate.setDate(batchEndDate.getDate() + batchSize - 1);
       if (batchEndDate > endDate) batchEndDate = new Date(endDate);
 
       const batchResult = await processDateBatch(
@@ -59,7 +67,7 @@ async function generateRooms(jobData) {
       totalRoomsCreated += batchResult.roomsCreated;
       totalDatesProcessed += batchResult.datesProcessed;
 
-      currentDate = new Date(batchEndDate);
+      currentDate.setDate(batchEndDate.getDate() + 1);
     }
 
     return { totalRoomsCreated, totalDatesProcessed };
