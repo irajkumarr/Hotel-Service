@@ -1,12 +1,14 @@
 const express = require("express");
 const { RoomController } = require("../../controllers");
-const { RoomMiddlewares } = require("../../middlewares");
+const { RoomMiddlewares, AuthMiddlewares } = require("../../middlewares");
 
 const router = express.Router();
 
 // api/v1/rooms  POST
 router.post(
   "/",
+  AuthMiddlewares.checkAuth,
+  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER"]),
   RoomMiddlewares.validateCreateRequest,
   RoomController.createRoom
 );
@@ -18,11 +20,18 @@ router.get("/", RoomController.getRooms);
 router.get("/:id", RoomController.getRoom);
 
 // api/v1/rooms/:id  DELETE
-router.delete("/:id", RoomController.deleteRoom);
+router.delete(
+  "/:id",
+  AuthMiddlewares.checkAuth,
+  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER"]),
+  RoomController.deleteRoom
+);
 
 // // api/v1/rooms/:id  PATCH
 router.patch(
   "/:id",
+  AuthMiddlewares.checkAuth,
+  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER", "HOTEL_STAFF"]),
   RoomMiddlewares.validateUpdateRequest,
   RoomController.updateRoom
 );
