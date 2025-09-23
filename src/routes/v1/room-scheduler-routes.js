@@ -2,11 +2,11 @@ const express = require("express");
 const { RoomSchedulerController } = require("../../controllers");
 const { AuthMiddlewares } = require("../../middlewares");
 
+const { Enums } = require("../utils/commons");
+const { ADMIN } = Enums.ROLE_TYPE;
 const router = express.Router();
-router.use(
-  AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles(["ADMIN"])
-);
+
+router.use(AuthMiddlewares.checkAuth, AuthMiddlewares.authorizeRoles([ADMIN]));
 /**
  * @route POST /api/v1/scheduler/start
  * @desc Start the room availability extension scheduler

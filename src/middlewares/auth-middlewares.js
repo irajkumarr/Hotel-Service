@@ -3,6 +3,8 @@ const { AppError } = require("../utils");
 const { Auth } = require("../utils/commons");
 const axios = require("axios");
 const { ServerConfig } = require("../config");
+const { Enums } = require("../utils/commons");
+const { USER, ADMIN, HOTEL_MANAGER, HOTEL_STAFF } = Enums.ROLE_TYPE;
 
 async function checkAuth(req, res, next) {
   try {
@@ -41,7 +43,7 @@ async function checkAuth(req, res, next) {
     }
 
     //  Check roles if needed
-    const allowedRoles = ["ADMIN", "HOTEL_MANAGER", "HOTEL_STAFF", "USER"];
+    const allowedRoles = [USER, ADMIN, HOTEL_MANAGER, HOTEL_STAFF];
     if (!allowedRoles.includes(userData.role)) {
       throw new AppError(
         "You do not have permission to perform this action",

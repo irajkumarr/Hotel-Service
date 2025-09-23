@@ -2,13 +2,16 @@ const express = require("express");
 const { HotelController } = require("../../controllers");
 const { HotelMiddlewares, AuthMiddlewares } = require("../../middlewares");
 
+const { Enums } = require("../utils/commons");
+const { ADMIN, HOTEL_MANAGER, HOTEL_STAFF } = Enums.ROLE_TYPE;
+
 const router = express.Router();
 
 // api/v1/hotels  POST
 router.post(
   "/",
   AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER"]),
+  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER]),
   HotelMiddlewares.validateCreateRequest,
   HotelController.createHotel
 );
@@ -23,7 +26,7 @@ router.get("/:id", HotelController.getHotel);
 router.delete(
   "/:id",
   AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER"]),
+  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER]),
   HotelController.deleteHotel
 );
 
@@ -31,7 +34,7 @@ router.delete(
 router.patch(
   "/:id",
   AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER","HOTEL_STAFF"]),
+  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
   HotelMiddlewares.validateUpdateRequest,
   HotelController.updateHotel
 );
