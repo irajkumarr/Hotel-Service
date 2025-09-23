@@ -1,5 +1,7 @@
 const CrudRepository = require("./crud-repository");
 const { prisma } = require("../config");
+const { AppError } = require("../utils");
+const { StatusCodes } = require("http-status-codes");
 
 class RoomRepository extends CrudRepository {
   constructor() {

@@ -23,8 +23,7 @@ const createRoom = asyncHandler(async (req, res) => {
  */
 const getRooms = asyncHandler(async (req, res) => {
   const result = await RoomService.getRooms(req.query);
-  SuccessResponse.data = result.data;
-  SuccessResponse.pagination = result.pagination;
+  SuccessResponse.data = result;
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 

@@ -134,7 +134,7 @@ async function getRooms(query) {
         limit,
         totalPages: Math.ceil(totalCount / limit),
       },
-      data: rooms,
+      rooms,
     };
   } catch (error) {
     console.log(error);
@@ -153,6 +153,7 @@ async function getRoom(id) {
     const room = await roomRepository.getRoom(Number(id));
     return room;
   } catch (error) {
+    console.log(error);
     if (error.statusCode == StatusCodes.NOT_FOUND) {
       throw new AppError(
         "The room you requested is not present",

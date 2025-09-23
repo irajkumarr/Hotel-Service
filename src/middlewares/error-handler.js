@@ -1,4 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
+const { Logger } = require("../config");
 
 const errorHandler = (err, req, res, next) => {
   Logger.error(`💥 ${err.message}`);
