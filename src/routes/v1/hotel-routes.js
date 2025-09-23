@@ -31,7 +31,7 @@ router.delete(
 router.patch(
   "/:id",
   AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER"]),
+  AuthMiddlewares.authorizeRoles(["ADMIN", "HOTEL_MANAGER","HOTEL_STAFF"]),
   HotelMiddlewares.validateUpdateRequest,
   HotelController.updateHotel
 );
