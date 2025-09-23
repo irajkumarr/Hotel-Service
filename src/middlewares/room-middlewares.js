@@ -35,30 +35,24 @@ function validateCreateRequest(req, res, next) {
   next();
 }
 
-const RoomUpdateSchema = Joi.object({
-  name: Joi.string().messages({
-    "string.base": "Room name must be a string",
-    "string.empty": "Room name cannot be empty",
-  }),
-  address: Joi.string().messages({
-    "string.base": "Address must be a string",
-    "string.empty": "Address cannot be empty",
-  }),
-  location: Joi.string().messages({
-    "string.base": "Location must be a string",
-    "string.empty": "Location cannot be empty",
-  }),
+const roomUpdateSchema = Joi.object({
+  price: Joi.number().required().messages({
+    "any.required": "Price is required",
+    "number.base": "Room price must be a number",
+    "number.empty": "Room price cannot be empty",
+  })
+ 
 });
 
 // Middleware
 function validateUpdateRequest(req, res, next) {
-  const { error, value } = RoomUpdateSchema.validate(req.body, {
+  const { error, value } = roomUpdateSchema.validate(req.body, {
     abortEarly: false,
   });
 
   if (error) {
     const errors = error.details.map((detail) => FormatMessage(detail.message));
-    ErrorResponse.message = "Something went wrong while updating Room";
+    ErrorResponse.message = "Something went wrong while updating room";
     ErrorResponse.error = new AppError(errors, StatusCodes.BAD_REQUEST);
     return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
   }

@@ -21,6 +21,10 @@ router.get("/:id", RoomController.getRoom);
 router.delete("/:id", RoomController.deleteRoom);
 
 // // api/v1/rooms/:id  PATCH
-router.patch("/:id", RoomController.updateRoom);
+router.patch(
+  "/:id",
+  RoomMiddlewares.validateUpdateRequest,
+  RoomController.updateRoom
+);
 
 module.exports = router;
