@@ -18,6 +18,9 @@ router.post(
 // api/v1/rooms  GET
 router.get("/", RoomController.getRooms);
 
+// api/v1/rooms/available  GET
+router.get("/available", RoomController.getAvailableRooms);
+
 // api/v1/rooms/:id  GET
 router.get("/:id", RoomController.getRoom);
 
@@ -34,7 +37,7 @@ router.patch(
   "/:id",
   // AuthMiddlewares.checkAuth,
   // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
-  RoomMiddlewares.validateUpdateRequest,
+  // RoomMiddlewares.validateUpdateRequest,
   RoomController.updateRoom
 );
 

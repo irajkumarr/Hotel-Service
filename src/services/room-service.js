@@ -51,7 +51,7 @@ async function createRoom(data) {
 }
 
 async function getRooms(query) {
-  let customFilter = { deletedAt: null };
+  let customFilter = { deletedAt: null, isBooked: false };
   let sortFilter = [];
   // price 1000-4500
   if (query.price) {
@@ -203,10 +203,28 @@ async function updateRoom(id, data) {
   }
 }
 
+async function getAvailableRooms(data) {
+  try {
+    // const checkDate = new Date(date);
+    // checkDate.setHours(0, 0, 0, 0);
+
+    const availableRooms = await roomRepository.getAvailableRooms(data);
+
+    return availableRooms;
+  } catch (error) {
+    console.log(error);
+    throw new AppError(
+      "Cannot get all the available rooms",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   createRoom,
   getRooms,
   getRoom,
   deleteRoom,
   updateRoom,
+  getAvailableRooms,
 };

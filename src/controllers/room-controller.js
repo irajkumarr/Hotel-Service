@@ -60,10 +60,26 @@ const updateRoom = asyncHandler(async (req, res) => {
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
+/**
+ * GET : /
+ * req-body {}
+ */
+const getAvailableRooms = asyncHandler(async (req, res) => {
+  const { hotelId, roomCategoryId, date } = req.query;
+  const result = await RoomService.getAvailableRooms({
+    hotelId,
+    roomCategoryId,
+    date,
+  });
+  SuccessResponse.data = result;
+  return res.status(StatusCodes.OK).json(SuccessResponse);
+});
+
 module.exports = {
   createRoom,
   getRooms,
   getRoom,
   deleteRoom,
   updateRoom,
+  getAvailableRooms,
 };

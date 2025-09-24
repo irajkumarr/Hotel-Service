@@ -31,6 +31,7 @@ class RoomRepository extends CrudRepository {
       where: {
         id,
         deletedAt: null,
+        isBooked: false,
       },
       include: {
         roomCategory: true,
@@ -80,6 +81,18 @@ class RoomRepository extends CrudRepository {
       roomCategoryId: result.roomCategoryId,
       latestDate: result._max.dateOfAvailability,
     }));
+  }
+
+  async getAvailableRooms(hotelId, roomCategoryId, date) {
+    const rooms = await prisma.room.findMany({
+      where: {
+        hotelId: +hotelId,
+        roomCategoryId: +roomCategoryId,
+        dateOfAvailability: date,
+        isBooked: false, // only show rooms not booked
+      },
+    });
+    return rooms;
   }
 }
 
