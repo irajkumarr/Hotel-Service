@@ -32,8 +32,8 @@ router.delete(
 // // api/v1/rooms/:id  PATCH
 router.patch(
   "/:id",
-  AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
+  // AuthMiddlewares.checkAuth,
+  // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
   RoomMiddlewares.validateUpdateRequest,
   RoomController.updateRoom
 );

@@ -55,6 +55,8 @@ model Room {
   roomCategoryId     Int      @map("room_category_id")
   dateOfAvailability DateTime @map("date_of_availability")
   price              Int
+  isBooked           Boolean  @default(false) @map("is_booked")
+  bookingId          Int?     @unique @map("booking_id")
 
   // Relations
   hotel        Hotel        @relation(fields: [hotelId], references: [id])

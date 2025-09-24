@@ -15,7 +15,6 @@ const roomSchema = Joi.object({
     "string.base": "Availability must be a date",
     "string.empty": "Availability cannot be empty",
   }),
-  
 });
 
 // Middleware
@@ -36,12 +35,11 @@ function validateCreateRequest(req, res, next) {
 }
 
 const roomUpdateSchema = Joi.object({
-  price: Joi.number().required().messages({
+  price: Joi.number().messages({
     "any.required": "Price is required",
     "number.base": "Room price must be a number",
     "number.empty": "Room price cannot be empty",
-  })
- 
+  }),
 });
 
 // Middleware
@@ -63,5 +61,5 @@ function validateUpdateRequest(req, res, next) {
 
 module.exports = {
   validateCreateRequest,
-  validateUpdateRequest
+  validateUpdateRequest,
 };
