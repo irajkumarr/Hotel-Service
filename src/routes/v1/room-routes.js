@@ -3,7 +3,7 @@ const { RoomController } = require("../../controllers");
 const { RoomMiddlewares, AuthMiddlewares } = require("../../middlewares");
 
 const { Enums } = require("../../utils/commons");
-const { ADMIN, HOTEL_MANAGER, HOTEL_STAFF } = Enums.ROLE_TYPE;
+const { ADMIN, HOTEL_MANAGER, HOTEL_STAFF, USER } = Enums.ROLE_TYPE;
 const router = express.Router();
 
 // api/v1/rooms  POST
@@ -32,18 +32,17 @@ router.delete(
 // api/v1/rooms/:id  PATCH
 router.patch(
   "/:id",
-  // AuthMiddlewares.checkAuth,
-  // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
-  // RoomMiddlewares.validateUpdateRequest,
+  AuthMiddlewares.checkAuth,
+  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
+  RoomMiddlewares.validateUpdateRequest,
   RoomController.updateRoom
 );
 
 // api/v1/rooms/:id/book  PATCH
 router.patch(
   "/:id/book",
-  // AuthMiddlewares.checkAuth,
-  // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
-  // RoomMiddlewares.validateUpdateRequest,
+  AuthMiddlewares.checkAuth,
+  AuthMiddlewares.authorizeRoles([USER]),
   RoomController.updateBookingStatus
 );
 
