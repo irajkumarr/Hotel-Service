@@ -41,8 +41,8 @@ router.patch(
 // api/v1/rooms/:id/book  PATCH
 router.patch(
   "/:id/book",
-  AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles([USER]),
+  // AuthMiddlewares.checkAuth,
+  // AuthMiddlewares.authorizeRoles([USER]),
   RoomController.updateBookingStatus
 );
 

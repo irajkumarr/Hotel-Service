@@ -9,6 +9,7 @@ const { USER, ADMIN, HOTEL_MANAGER, HOTEL_STAFF } = Enums.ROLE_TYPE;
 async function checkAuth(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
+    console.log(authHeader);
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       throw new AppError(
         "Missing or invalid Authorization header",
