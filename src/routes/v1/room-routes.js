@@ -18,9 +18,6 @@ router.post(
 // api/v1/rooms  GET
 router.get("/", RoomController.getRooms);
 
-// api/v1/rooms/available  GET
-router.get("/available", RoomController.getAvailableRooms);
-
 // api/v1/rooms/:id  GET
 router.get("/:id", RoomController.getRoom);
 
@@ -32,13 +29,22 @@ router.delete(
   RoomController.deleteRoom
 );
 
-// // api/v1/rooms/:id  PATCH
+// api/v1/rooms/:id  PATCH
 router.patch(
   "/:id",
   // AuthMiddlewares.checkAuth,
   // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
   // RoomMiddlewares.validateUpdateRequest,
   RoomController.updateRoom
+);
+
+// api/v1/rooms/:id/book  PATCH
+router.patch(
+  "/:id/book",
+  // AuthMiddlewares.checkAuth,
+  // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER, HOTEL_STAFF]),
+  // RoomMiddlewares.validateUpdateRequest,
+  RoomController.updateBookingStatus
 );
 
 module.exports = router;

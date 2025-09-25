@@ -207,18 +207,20 @@ async function updateRoom(id, data) {
   }
 }
 
-async function getAvailableRooms(data) {
+async function updateBookingStatus(id, data) {
   try {
-    // const checkDate = new Date(date);
-    // checkDate.setHours(0, 0, 0, 0);
-
-    const availableRooms = await roomRepository.getAvailableRooms(data);
-
-    return availableRooms;
+    const booking = await roomRepository.update(+id, data);
+    return booking;
   } catch (error) {
     console.log(error);
+    if (error.name === "PrismaClientKnownRequestError") {
+      throw new AppError(
+        "The room you requested to update is not present",
+        StatusCodes.NOT_FOUND
+      );
+    }
     throw new AppError(
-      "Cannot get all the available rooms",
+      "Cannot update the room booking",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -230,5 +232,5 @@ module.exports = {
   getRoom,
   deleteRoom,
   updateRoom,
-  getAvailableRooms,
+  updateBookingStatus,
 };

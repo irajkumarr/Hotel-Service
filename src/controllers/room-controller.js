@@ -61,17 +61,16 @@ const updateRoom = asyncHandler(async (req, res) => {
 });
 
 /**
- * GET : /
- * req-body {}
+ * PATCH : /
+ * req-body {isBooked:true,bookingId:2}
  */
-const getAvailableRooms = asyncHandler(async (req, res) => {
-  const { hotelId, roomCategoryId, date } = req.query;
-  const result = await RoomService.getAvailableRooms({
-    hotelId,
-    roomCategoryId,
-    date,
+const updateBookingStatus = asyncHandler(async (req, res) => {
+  const { isBooked, bookingId } = req.body;
+  const room = await RoomService.updateBookingStatus(req.params.id, {
+    isBooked,
+    bookingId,
   });
-  SuccessResponse.data = result;
+  SuccessResponse.data = room;
   return res.status(StatusCodes.OK).json(SuccessResponse);
 });
 
@@ -81,5 +80,5 @@ module.exports = {
   getRoom,
   deleteRoom,
   updateRoom,
-  getAvailableRooms,
+  updateBookingStatus,
 };

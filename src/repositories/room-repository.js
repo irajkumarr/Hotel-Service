@@ -31,7 +31,7 @@ class RoomRepository extends CrudRepository {
       where: {
         id,
         deletedAt: null,
-        isBooked: false,
+        // isBooked: false,
       },
       include: {
         roomCategory: true,
