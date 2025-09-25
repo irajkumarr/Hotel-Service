@@ -9,8 +9,8 @@ const router = express.Router();
 // api/v1/rooms  POST
 router.post(
   "/",
-  AuthMiddlewares.checkAuth,
-  AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER]),
+  // AuthMiddlewares.checkAuth,
+  // AuthMiddlewares.authorizeRoles([ADMIN, HOTEL_MANAGER]),
   RoomMiddlewares.validateCreateRequest,
   RoomController.createRoom
 );

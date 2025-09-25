@@ -12,10 +12,14 @@ async function createRoom(data) {
 
     // Check availability date
     const dateOfAvailability = new Date(data.dateOfAvailability);
+    dateOfAvailability.setUTCHours(0, 0, 0, 0);
 
-    if (dateOfAvailability <= new Date()) {
+    const todayDate = new Date();
+    todayDate.setUTCHours(0, 0, 0, 0);
+
+    if (dateOfAvailability < todayDate) {
       throw new AppError(
-        "Availability date must be in the future",
+        "Availability date must be equal or in the future",
         StatusCodes.BAD_REQUEST
       );
     }
